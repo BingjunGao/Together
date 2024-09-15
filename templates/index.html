@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型预测页面</title>
+</head>
+<body>
+    <h1>输入数据进行预测</h1>
+    <form id="predict-form">
+        <label for="ap">ap:</label>
+        <input type="text" id="ap" name="ap"><br>
+
+        <label for="crp">crp:</label>
+        <input type="text" id="crp" name="crp"><br>
+
+        <label for="ca">ca:</label>
+        <input type="text" id="ca" name="ca"><br>
+
+        <label for="ggt">ggt:</label>
+        <input type="text" id="ggt" name="ggt"><br>
+
+        <label for="tp">tp:</label>
+        <input type="text" id="tp" name="tp"><br>
+
+        <label for="ab">ab:</label>
+        <input type="text" id="ab" name="ab"><br>
+
+        <label for="gc">gc:</label>
+        <input type="text" id="gc" name="gc"><br>
+
+        <label for="nab">nab:</label>
+        <input type="text" id="nab" name="nab"><br>
+
+        <button type="submit">提交</button>
+    </form>
+
+    <h2>预测结果：</h2>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('predict-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                ap: document.getElementById('ap').value,
+                crp: document.getElementById('crp').value,
+                ca: document.getElementById('ca').value,
+                ggt: document.getElementById('ggt').value,
+                tp: document.getElementById('tp').value,
+                ab: document.getElementById('ab').value,
+                gc: document.getElementById('gc').value,
+                nab: document.getElementById('nab').value
+            };
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `预测结果: ${data.prediction}`;
+            });
+        });
+    </script>
+</body>
+</html>
