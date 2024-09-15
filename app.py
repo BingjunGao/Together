@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import joblib
 import os
+import numpy as np
 
 app = Flask(__name__)
 
@@ -31,9 +32,11 @@ def predict():
         data['gc'],
         data['nab']
     ]
-    
-    # 使用模型进行预测
-    prediction = model.predict([input_data])
+    # 假设 input_data 是你从前端获取的输入数据
+    input_data = [float(value) for value in input_data]  # 转换为浮点数类型
+    input_data = np.array(input_data).reshape(1, -1)     # 转换为 numpy 数组
+
+    prediction = model.predict(input_data)
     
     # 返回预测结果
     return jsonify({'prediction': prediction.tolist()})
